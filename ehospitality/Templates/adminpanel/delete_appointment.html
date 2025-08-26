@@ -1,0 +1,15 @@
+{% extends "base_admin.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Delete Appointment</h2>
+  <p>Are you sure you want to delete the appointment between 
+     <strong>{{ appointment.patient.user.username }}</strong> and 
+     <strong>{{ appointment.doctor.user.username }}</strong> on {{ appointment.date }}?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'adminpanel:manage_appointments' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

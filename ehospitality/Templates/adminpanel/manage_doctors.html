@@ -1,0 +1,28 @@
+{% extends "base_admin.html" %}
+{% block content %}
+<h2>Manage Doctors</h2>
+<a href="{% url 'adminpanel:add_doctor' %}" class="btn btn-primary mb-3">Add Doctor</a>
+<table class="table table-bordered">
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Actions</th>
+  </tr>
+  {% for doctor in doctors %}
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ doctor.user.username }}</td>
+    <td>{{ doctor.user.email }}</td>
+    <td>
+      <a href="{% url 'adminpanel:edit_doctor' doctor.id %}" class="btn btn-warning btn-sm">Edit</a>
+      <a href="{% url 'adminpanel:delete_doctor' doctor.id %}"
+         class="btn btn-danger btn-sm"
+         onclick="return confirm('Are you sure you want to delete this doctor?');">
+         Delete
+      </a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

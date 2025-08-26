@@ -1,0 +1,28 @@
+{% extends 'base_doctor.html' %}
+{% block title %}Availability{% endblock %}
+{% block content %}
+<h3>Weekly Availability</h3>
+{% include 'doctor/_nav.html' %}
+<div class="mb-3">
+  <a href="{% url 'doctor:availability_create' %}" class="btn btn-primary">Add Availability</a>
+</div>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-striped mb-0">
+      <thead><tr><th>Day</th><th>Start</th><th>End</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+        {% for a in availabilities %}
+        <tr>
+          <td>{{ a.get_day_of_week_display }}</td>
+          <td>{{ a.start_time }}</td>
+          <td>{{ a.end_time }}</td>
+          <td class="text-end"><a class="btn btn-sm btn-outline-danger" href="{% url 'doctor:availability_delete' a.id %}">Delete</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center p-4">No availability set.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

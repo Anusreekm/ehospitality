@@ -1,0 +1,61 @@
+{% extends "base_admin.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-2">
+            <h3 class="mb-0">{% if form.instance.pk %}Edit{% else %}Add{% endif %} {{ type }} User</h3>
+        </div>
+        <div class="card-body py-3">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Text fields -->
+                {% for field in form %}
+                    {% if field.name != "role" and field.name != "is_active" %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">{{ field.label }}</label>
+                            {{ field|add_class:"form-control form-control-sm" }}
+                            {% if field.errors %}
+                                <div class="text-danger mt-1 small">{{ field.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Role dropdown -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Role</label>
+                    <select name="role" class="form-select form-select-sm">
+                        {% for key, value in form.fields.role.choices %}
+                            <option value="{{ key }}" {% if form.instance.role == key %}selected{% endif %}>
+                                {{ value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {% if form.role.errors %}
+                        <div class="text-danger mt-1 small">{{ form.role.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Active checkbox -->
+                <div class="mb-3 form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="is_active" id="id_is_active"
+                           {% if form.instance.is_active %}checked{% endif %}>
+                    <label class="form-check-label small" for="id_is_active">Active</label>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button type="submit" class="btn btn-success btn-sm px-3">
+                        {% if form.instance.pk %}Update{% else %}Add{% endif %}
+                    </button>
+                    <a href="{% url 'adminpanel:manage_users' %}" class="btn btn-outline-secondary btn-sm px-3">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

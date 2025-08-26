@@ -1,0 +1,40 @@
+{% extends 'base_doctor.html' %}
+{% block title %}Appointments{% endblock %}
+{% block content %}
+<h3>Appointments</h3>
+{% include 'doctor/_nav.html' %}
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-striped mb-0">
+      <thead><tr><th>Date</th><th>Time</th><th>Patient</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+        {% for a in appointments %}
+        <tr>
+          <td>{{ a.date }}</td>
+          <td>{{ a.time }}</td>
+          <td>
+            <a href="{% url 'doctor:patient_detail' a.patient.id %}">
+              {{ a.patient.user.get_full_name|default:a.patient.user.username }}
+            </a>
+          </td>
+          <td><span class="badge text-bg-secondary">{{ a.status }}</span></td>
+          <td class="text-end">
+            {% if a.status != 'cancelled' and a.status != 'completed' %}
+              {% if a.status != 'confirmed' %}
+                <a href="{% url 'doctor:appointment_confirm' a.id %}" class="btn btn-sm btn-success">Confirm</a>
+              {% endif %}
+              <a href="{% url 'doctor:appointment_cancel' a.id %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+              <a href="{% url 'doctor:appointment_complete' a.id %}" class="btn btn-sm btn-outline-primary">Complete</a>
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center p-4">No appointments found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "base_patient.html" %}
+{% block content %}
+  <h2>Payment Cancelled ❌</h2>
+  <p>Your bill #{{ bill.id }} of ₹{{ bill.amount }} was not paid.</p>
+  <a href="{% url 'patient:pay_bill' bill.id %}">Try Again</a>
+{% endblock %}

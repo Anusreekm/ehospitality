@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center"
+     style="min-height: 100vh; background-color:#f8f9fa; padding-top: 60px;">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-lg border-0 rounded-4">
+
+      <!-- Header -->
+      <div class="card-header text-center bg-primary text-white rounded-top-4">
+        <h3 class="mb-0">Create an Account</h3>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body p-5 bg-white" style="padding-top: 30px;">
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          <!-- Loop through all fields -->
+          {% for field in form %}
+          <div class="mb-3">
+
+            <label class="form-label fw-semibold">{{ field.label }} </label>
+            {# If this is the role dropdown -> use form-select #}
+            {% if field.name == "role" %}
+              {{ field|add_class:"form-select form-select-lg rounded-pill" }}
+            {% else %}
+              {{ field|add_class:"form-control form-control-lg rounded-pill" }}
+            {% endif %}
+
+            {% if field.errors %}
+              <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+
+          <br>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+              <i class="bi bi-person-plus"></i> Register
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer text-center small bg-light rounded-bottom-4">
+        Already have an account?
+        <a href="{% url 'accounts:login' %}" class="fw-semibold text-primary">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

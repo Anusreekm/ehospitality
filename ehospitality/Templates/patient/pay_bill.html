@@ -1,0 +1,18 @@
+{% extends "base_patient.html" %}
+{% block content %}
+<h2>Pay Bill</h2>
+
+<p><strong>Amount:</strong> ${{ bill.amount }}</p>
+<p><strong>Status:</strong> {{ bill.status }}</p>
+
+{% if bill.status == "unpaid" %}
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Pay with Stripe</button>
+  </form>
+{% else %}
+  <p class="text-success">This bill is already paid.</p>
+{% endif %}
+
+<a href="{% url 'patient:patient_dashboard' %}">Back to Dashboard</a>
+{% endblock %}

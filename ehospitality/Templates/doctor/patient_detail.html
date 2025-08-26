@@ -1,0 +1,56 @@
+{% extends 'base_doctor.html' %}
+{% block title %}Patient{% endblock %}
+{% block content %}
+<h3>Patient: {{ patient.user.get_full_name|default:patient.user.username }}</h3>
+<div class="mb-3">
+  <a href="{% url 'doctor:prescribe' patient.id %}" class="btn btn-primary">Create Prescription</a>
+</div>
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Appointments with you</div>
+      <ul class="list-group list-group-flush">
+        {% for a in appointments %}
+          <li class="list-group-item">{{ a.date }} {{ a.time }} — <span class="badge text-bg-secondary">{{ a.status }}</span></li>
+        {% empty %}
+          <li class="list-group-item">None</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Medical History</div>
+      <ul class="list-group list-group-flush">
+        {% for h in histories %}
+          <li class="list-group-item">
+            <strong>{{ h.diagnosis }}</strong><br>
+            {% if h.treatment %}<small>Treatment: {{ h.treatment }}</small><br>{% endif %}
+            {% if h.allergies %}<small>Allergies: {{ h.allergies }}</small><br>{% endif %}
+            {% if h.medications %}<small>Meds: {{ h.medications }}</small>{% endif %}
+          </li>
+        {% empty %}
+          <li class="list-group-item">None</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% if prescriptions %}
+<div class="card mt-3">
+  <div class="card-header">Prescriptions</div>
+  <ul class="list-group list-group-flush">
+    {% for rx in prescriptions %}
+      <li class="list-group-item">
+        <strong>Rx #{{ rx.id }}</strong> — {{ rx.created_at }}<br>
+        {% for it in rx.items.all %}
+          - {{ it.drug_name }} | {{ it.dosage }} | {{ it.frequency }} | {{ it.duration }}<br>
+        {% endfor %}
+        {% if rx.notes %}<em>Notes:</em> {{ rx.notes }}{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "base_patient.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Welcome, {{ patient.user.first_name }}!</h2>
+
+    <!-- Appointments -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h4>Your Appointments</h4>
+            <a href="{% url 'patient:book_appointment' %}" class="btn btn-primary btn-sm">Book Appointment</a>
+        </div>
+
+        {% if appointments %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Doctor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in appointments %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ a.date|date:"M d, Y" }}</td>
+                                <td>{{ a.time|time:"H:i" }}</td>
+                                <td>{{ a.doctor.user.get_full_name }}</td>
+                                <td>
+                                    <span class="badge
+                                        {% if a.status == 'pending' %}bg-warning
+                                        {% elif a.status == 'completed' %}bg-success
+                                        {% elif a.status == 'cancelled' %}bg-danger
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ a.status|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted">No appointments yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Bills -->
+    <div class="mb-4">
+        <h4>Your Bills</h4>
+        {% if bills %}
+            <div class="list-group">
+                {% for b in bills %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            ${{ b.amount }} -
+                            <span class="badge {% if b.status == 'unpaid' %}bg-danger{% else %}bg-success{% endif %}">
+                                {{ b.status|title }}
+                            </span>
+                        </div>
+                        {% if b.status == "unpaid" %}
+                            <a href="{% url 'patient:pay_bill' b.id %}" class="btn btn-sm btn-outline-primary">Pay Now</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">No bills yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Health Resources -->
+    <div class="mb-4">
+        <a href="{% url 'patient:resources' %}" class="btn btn-info btn-sm">View Health Resources</a>
+    </div>
+
+
+    <h3 class="mt-4">My Prescriptions</h3>
+{% if prescriptions %}
+    <ul class="list-group">
+        {% for prescription in prescriptions %}
+            <li class="list-group-item">
+                <strong>Doctor:</strong> {{ prescription.doctor.user.first_name }} <br>
+                <strong>Date:</strong> {{ prescription.created_at|date:"M d, Y H:i" }} <br>
+                <strong>Notes:</strong> {{ prescription.notes|default:"No notes" }} <br>
+
+                {% if prescription.items.all %}
+                    <ul class="mt-2">
+                        {% for item in prescription.items.all %}
+                            <li>
+                                {{ item.drug_name }} -
+                                {{ item.dosage }},
+                                {{ item.frequency }},
+                                {{ item.duration }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="text-muted">No prescriptions available.</p>
+{% endif %}
+{% endblock %}

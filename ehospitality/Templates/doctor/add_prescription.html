@@ -1,0 +1,56 @@
+{% extends "base_doctor.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+
+    {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h3>Add Prescription for {{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</h3>
+
+    <form method="post" class="shadow p-4 rounded bg-light">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.notes.label_tag }}
+            {{ form.notes }}
+        </div>
+
+        <h5>Medicines</h5>
+        {{ formset.management_form }}
+        {% for f in formset %}
+            <div class="card mb-2 p-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ f.drug_name.label_tag }} {{ f.drug_name }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.dosage.label_tag }} {{ f.dosage }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.frequency.label_tag }} {{ f.frequency }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ f.duration.label_tag }} {{ f.duration }}
+                    </div>
+                    <div class="col-md-3">
+                        {% if f.DELETE %}
+                            <div class="form-check mt-4">
+                                {{ f.DELETE }} <label class="form-check-label">Remove</label>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success w-100 mt-3">Save Prescription</button>
+    </form>
+</div>
+{% endblock %}

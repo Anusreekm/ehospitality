@@ -1,0 +1,18 @@
+{% extends 'base_doctor.html' %}
+{% block title %}Add Availability{% endblock %}
+{% block content %}
+<h3>Add Availability</h3>
+{% include 'doctor/_nav.html' %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <form method="post">{% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary w-100">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

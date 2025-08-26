@@ -1,0 +1,6 @@
+{% extends "base_patient.html" %}
+{% block content %}
+  <h2>Payment Successful 🎉</h2>
+  <p>Your bill #{{ bill.id }} of ₹{{ bill.amount }} has been paid successfully.</p>
+  <a href="{% url 'patient:patient_dashboard' %}">Back to Dashboard</a>
+{% endblock %}

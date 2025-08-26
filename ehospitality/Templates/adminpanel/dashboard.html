@@ -1,0 +1,104 @@
+{% extends "base_admin.html" %}
+{% block content %}
+<div class="container mt-5">
+
+  <!-- Page Title -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Admin Dashboard</h2>
+    <span class="text-muted">Welcome, {{ request.user.username }}</span>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">Users</h5>
+          <h2>{{ user_count }}</h2>
+          <a href="{% url 'adminpanel:manage_users' %}" class="btn btn-outline-primary btn-sm mt-2">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title text-success">Doctors</h5>
+          <h2>{{ doctor_count }}</h2>
+          <a href="{% url 'adminpanel:manage_doctors' %}?type=doctor" class="btn btn-outline-success btn-sm mt-2">View Doctors</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title text-info">Patients</h5>
+          <h2>{{ patient_count }}</h2>
+          <a href="{% url 'adminpanel:manage_patients' %}?type=patient" class="btn btn-outline-info btn-sm mt-2">View Patients</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title text-warning">Facilities</h5>
+          <h2>{{ facility_count }}</h2>
+          <a href="{% url 'adminpanel:manage_facilities' %}" class="btn btn-outline-warning btn-sm mt-2">Manage</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title text-warning">Resources</h5>
+          <h2>{{ resource_count }}</h2>
+          <a href="{% url 'adminpanel:manage_resources' %}" class="btn btn-outline-warning btn-sm mt-2">Manage</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+  <div class="card shadow-sm border-0 h-100">
+    <div class="card-body text-center">
+      <h5 class="card-title text-danger">Appointments</h5>
+      <h2>{{ appointment_count }}</h2>
+
+      <a href="{% url 'adminpanel:manage_appointments' %}" class="btn btn-outline-danger btn-sm mt-2">Manage</a>
+    </div>
+  </div>
+</div>
+  </div>
+
+
+  <!-- Appointments -->
+<!--<div class="card-body">-->
+<!--  <h3>Appoinments </h3>-->
+<!--  {% if appointments %}-->
+<!--    <table class="table table-hover align-middle">-->
+<!--      <thead class="table-light">-->
+<!--        <tr>-->
+<!--          <th>Patient</th>-->
+<!--          <th>Doctor</th>-->
+<!--          <th>Date</th>-->
+<!--&lt;!&ndash;          <th>Time</th>&ndash;&gt;-->
+<!--          <th>Status</th>-->
+<!--        </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--        {% for app in appointments %}-->
+<!--          <tr>-->
+<!--            <td>{{ app.patient.user.username }}</td>-->
+<!--            <td>{{ app.doctor.user.username }}</td>-->
+<!--            <td>{{ app.date }}</td>-->
+<!--&lt;!&ndash;            <td>{{ app.time }}</td>&ndash;&gt;-->
+<!--            <td>{{ app.status|title }}</td>-->
+<!--          </tr>-->
+<!--        {% endfor %}-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  {% else %}-->
+<!--    <p class="text-muted">No upcoming appointments.</p>-->
+<!--  {% endif %}-->
+<!--</div>-->
+
+
+{% endblock %}

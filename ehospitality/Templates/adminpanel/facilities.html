@@ -1,0 +1,50 @@
+{% extends "base_admin.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Facilities</h2>
+        <a href="{% url 'adminpanel:add_facility' %}" class="btn btn-primary btn-sm">
+            Add Facility
+        </a>
+    </div>
+
+    {% if facilities %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Department</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in facilities %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ f.name }}</td>
+                            <td>{{ f.location }}</td>
+                            <td>{{ f.department }}</td>
+                            <td>
+                                <a href="{% url 'adminpanel:edit_facility' f.id %}"
+                                   class="btn btn-warning btn-sm me-1">
+                                    Edit
+                                </a>
+                                <a href="{% url 'adminpanel:delete_facility' f.id %}"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Are you sure you want to delete this facility?');">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">No facilities found.</div>
+    {% endif %}
+</div>
+{% endblock %}

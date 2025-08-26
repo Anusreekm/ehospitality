@@ -1,0 +1,60 @@
+{% extends "base_patient.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Book an Appointment</h2>
+
+    <form method="post" class="shadow p-4 rounded bg-light">
+        {% csrf_token %}
+
+        <!-- Doctor Selection -->
+        <div class="mb-3">
+            <label for="doctor" class="form-label fw-bold">Select Doctor</label>
+            <select name="doctor" id="doctor" class="form-select" required>
+                <option value="">-- Choose Doctor --</option>
+                {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}"
+                        {% if selected_doctor == doctor.id %}selected{% endif %}>
+                        Dr. {{ doctor.user.first_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Date Selection -->
+        <div class="mb-3">
+            <label for="date" class="form-label fw-bold">Choose Date</label>
+            <input type="date" name="date" id="date"
+                   class="form-control"
+                   value="{{ selected_date|default:'' }}"
+                   min="{{ today }}" required>
+        </div>
+
+        <!-- Time Slots -->
+        {% if time_slots %}
+        <div class="mb-3">
+            <label class="form-label fw-bold">Available Time Slots</label>
+            <div class="d-flex flex-wrap gap-2">
+                {% for slot in time_slots %}
+                    <button type="submit" name="time" value="{{ slot }}"
+                            class="btn btn-outline-primary">
+                        {{ slot }}
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Error Message -->
+        {% if error %}
+            <p class="text-danger fw-bold">{{ error }}</p>
+        {% endif %}
+
+        <!-- Final Submit (only when no slots shown yet) -->
+        {% if not time_slots %}
+            <button type="submit" class="btn btn-success w-100">
+                Check Available Slots
+            </button>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

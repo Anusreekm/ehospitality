@@ -1,0 +1,39 @@
+{% extends 'base_doctor.html' %}
+{% block title %}Doctor Dashboard{% endblock %}
+{% block content %}
+<h3>Doctor Dashboard</h3>
+{% include 'doctor/_nav.html' %}
+
+<div class="card mt-3">
+  <div class="card-header">Upcoming Appointments</div>
+  <ul class="list-group list-group-flush">
+    {% for a in appointments %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ a.date }} {{ a.time }}</strong> —
+          {{ a.patient.user.get_full_name|default:a.patient.user.username }}
+        </div>
+
+        <div>
+  <span class="badge bg-secondary">{{ a.status }}</span>
+
+  {% if a.status == "confirmed" %}
+    <!-- Only confirmed appointments can add prescription -->
+    <a href="{% url 'doctor:add_prescription' a.id %}" class="btn btn-sm btn-primary ms-2">
+      Write Prescription
+    </a>
+  {% else %}
+    <!-- Greyed-out disabled button -->
+    <button class="btn btn-sm btn-secondary ms-2" disabled>
+      Prescription Closed
+    </button>
+  {% endif %}
+</div>
+
+      </li>
+    {% empty %}
+      <li class="list-group-item">No upcoming appointments.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

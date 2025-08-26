@@ -1,0 +1,5 @@
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item"><a class="nav-link{% if request.path|slice:':/doctor/' %} active{% endif %}" href="{% url 'doctor:dashboard' %}">Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'doctor:appointments_list' %}">Appointments</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'doctor:availability_list' %}">Availability</a></li>
+</ul>

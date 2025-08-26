@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color:#f8f9fa; padding-top: 60px;">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-lg border-0 rounded-4">
+
+      <!-- Header -->
+      <div class="card-header text-center bg-primary text-white rounded-top-4">
+        <h3 class="mb-0">Welcome Back</h3>
+        <h7 class="mb-0">Login to continue</h7>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body p-5 bg-white" style="padding-top: 30px;">
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          <!-- Username -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Username</label>
+            <input type="text" name="username" class="form-control form-control-lg rounded-pill" required>
+            {% for message in messages %}
+              {% if "username_error" in message.tags %}
+                <small class="text-danger">{{ message }}</small>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password" name="password" class="form-control form-control-lg rounded-pill" required>
+            {% for message in messages %}
+              {% if "password_error" in message.tags %}
+                <small class="text-danger">{{ message }}</small>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- Login error (invalid credentials) -->
+          {% for message in messages %}
+            {% if "login_error" in message.tags %}
+              <div class="alert alert-danger mt-2">{{ message }}</div>
+            {% endif %}
+          {% endfor %}
+
+          <br>
+          <!-- Submit -->
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+              <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer text-center small bg-light rounded-bottom-4">
+        Don’t have an account?
+        <a href="{% url 'accounts:register' %}" class="fw-semibold text-primary">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
